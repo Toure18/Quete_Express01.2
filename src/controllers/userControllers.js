@@ -26,8 +26,8 @@ const getUsers = (req, res) => {
      .catch(([err]) =>{
         console.error(err);
         res.sendStatus(500);
-     })
-}
+     });
+};
  
 
 const getUserId = (req, res) =>{
@@ -44,11 +44,26 @@ const getUserId = (req, res) =>{
      .catch(([err]) => {
         console.error(err);
         res.sendStatus(500);
+     });
+};
+
+const postUsers = (req, res) => {
+    const {firstname, lastname, email, city, language} = req.body;
+     database
+     .query("INSERT INTO users(firstname, lastname, email, city, language) VALUES ( ?, ?, ?, ?, ?)", [firstname, lastname, email, city, language])
+     .then(([newUser]) => {
+        res.status(201).send({new_user_id: newUser.insertId});
      })
-}
+     .catch(([err]) => {
+        console.error(err);
+        res.sendStatus(500);
+     });
+    
+};
     
 module.exports = {
     getUsers,
     getUserId,
+    postUsers
 }
 
